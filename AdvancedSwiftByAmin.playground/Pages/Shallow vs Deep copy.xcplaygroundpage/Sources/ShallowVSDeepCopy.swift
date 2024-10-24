@@ -74,3 +74,78 @@ public func createDeepCopy() {
     print("Deep Copied Employee Person Name: \(deepCopiedEmployee.personInfo.name)") // Outputs: Charlie
 
 }
+
+
+public func deepDataCopy() {
+    
+    // Step 1: Create an initial Data instance
+    var data1 = Data([0x01, 0x02, 0x03])
+    
+    // Step 2: Assign data1 to data2 (shallow copy)
+    var data2 = data1
+    
+    print("Before mutation:")
+    print("data1: \(data1 as NSData)")
+    print("data2: \(data2 as NSData)")
+    
+    // Step 3: Mutate data2
+    data2.append(0x04)
+    
+    print("\nAfter mutation:")
+    print("data1: \(data1 as NSData)")
+    print("data2: \(data2 as NSData)")
+    
+    print(">>> Mutating data2 did not affect data1 <<<<")
+
+}
+
+
+public func implementCopyOnWrite() {
+    // Reference type (class) that holds data
+    class Storage {
+        var value: Int
+        init(value: Int) {
+            self.value = value
+        }
+    }
+
+    // Value type (struct) that wraps the Storage class
+    struct MyStruct {
+        private var storage: Storage
+
+        init(value: Int) {
+            self.storage = Storage(value: value)
+        }
+
+        // Accessor for the value
+        var value: Int {
+            get { storage.value }
+            set {
+                // Copy-on-Write Implementation
+                if !isKnownUniquelyReferenced(&storage) {
+                    // Storage is shared; create a new instance
+                    storage = Storage(value: newValue)
+                } else {
+                    // Storage is unique; modify directly
+                    storage.value = newValue
+                }
+            }
+        }
+    }
+
+    // Usage
+    var a = MyStruct(value: 10)
+    var b = a  // Shallow copy; storage is shared
+
+    print("Before mutation:")
+    print("a.value = \(a.value)") // Outputs 10
+    print("b.value = \(b.value)") // Outputs 10
+
+    // Mutate b's value
+    b.value = 20  // Triggers copy-on-write
+
+    print("\nAfter mutation:")
+    print("a.value = \(a.value)") // Outputs 10
+    print("b.value = \(b.value)") // Outputs 20
+}
+
