@@ -24,7 +24,7 @@ public func createShallowCopy() {
     let originalPerson = Person(name: "Alice")
 
     // Create an Employee struct containing the Person instance
-    var originalEmployee = Employee(id: 1, personInfo: originalPerson)
+    let originalEmployee = Employee(id: 1, personInfo: originalPerson)
 
     // Assign originalEmployee to a new variable (shallow copy)
     var copiedEmployee = originalEmployee
@@ -65,9 +65,9 @@ public func createDeepCopy() {
     let originalPerson = Person(name: "Alice")
 
     // Create an Employee struct containing the Person instance
-    var originalEmployee = Employee(id: 1, personInfo: originalPerson)
+    let originalEmployee = Employee(id: 1, personInfo: originalPerson)
     
-    var deepCopiedEmployee = originalEmployee.deepCopy()
+    let deepCopiedEmployee = originalEmployee.deepCopy()
     deepCopiedEmployee.personInfo.name = "Charlie"
 
     print("Original Employee Person Name: \(originalEmployee.personInfo.name)") // Outputs: Bob
@@ -79,7 +79,7 @@ public func createDeepCopy() {
 public func deepDataCopy() {
     
     // Step 1: Create an initial Data instance
-    var data1 = Data([0x01, 0x02, 0x03])
+    let data1 = Data([0x01, 0x02, 0x03])
     
     // Step 2: Assign data1 to data2 (shallow copy)
     var data2 = data1
@@ -134,7 +134,7 @@ public func implementCopyOnWrite() {
     }
 
     // Usage
-    var a = MyStruct(value: 10)
+    let a = MyStruct(value: 10)
     var b = a  // Shallow copy; storage is shared
 
     print("Before mutation:")
